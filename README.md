@@ -99,17 +99,33 @@ cp finance_app/.env.example finance_app/.env
 alembic -c finance_app/alembic.ini upgrade head
 ```
 
-### 5. (Optional) Seed sample data
+### 5. Seed sample data (recommended)
 
 ```bash
-# Generates a random password for seeded users by default.
-python -m finance_app.seed
-
-# Use a fixed password and print it:
 python -m finance_app.seed --password secret123 --show-password
 ```
 
-Seeds three users (`viewer@example.com`, `analyst@example.com`, `admin@example.com`), five categories, and seven sample transactions spread across several months.
+This creates three ready-to-use accounts, five categories, and seven sample transactions spread across several months:
+
+| Email | Role | Password |
+|---|---|---|
+| `viewer@example.com` | viewer | `secret123` |
+| `analyst@example.com` | analyst | `secret123` |
+| `admin@example.com` | admin | `secret123` |
+
+**Categories created:**
+
+| Name | Type |
+|---|---|
+| `Salary` | income |
+| `Freelance` | income |
+| `Food` | expense |
+| `Rent` | expense |
+| `Utilities` | expense |
+
+**Sample transactions** are spread across January–April 2026 for all three users, so analytics endpoints like `/api/analytics/monthly` and `/api/analytics/by-category` return meaningful data immediately after seeding.
+
+The seed script is idempotent — safe to run multiple times without duplicating data.
 
 ### 6. Start the server
 
@@ -297,9 +313,22 @@ All errors return a JSON body with a `detail` field:
 
 ---
 
+## Testing the API manually
+
+The fastest way to explore all endpoints is through the Swagger UI at `http://localhost:8000/docs` after starting the server.
+
+1. Run the seed script to create all three role accounts (see step 5 above)
+2. Call `POST /api/auth/login` with any seeded email and password to get a token
+3. Click **Authorize** at the top of the Swagger UI and paste the token
+4. All endpoints are now available to test interactively
+
+To test role restrictions, log in with different accounts — viewer, analyst, and admin each have different access levels clearly enforced at every endpoint.
+
+---
+
 ## Running tests
 
-Tests run against the primary database from `finance_app/.env` using a rollback-per-test pattern — no data is left behind.
+Tests run against the primary database from `finance_app/.env` using a rollback-per-test pattern — no data is left behind after each run.
 
 ```bash
 # From the repo root
@@ -326,6 +355,6 @@ The test suite covers auth flows, full transaction CRUD, role enforcement (viewe
 - **Viewers** have read-only access to their own transactions but cannot apply any filters or access analytics.
 - **Analysts** can filter and access analytics (scoped to their own data) but cannot delete transactions.
 - **Admins** have full CRUD on all transactions across all users, can create transactions on behalf of any user via `target_user_id`, and see all data in analytics.
-- **Authentication** uses JWT Bearer tokens only — no session cookies.
+- **Authentication** uses JWT Bearer tokens only, no session cookies.
 - **bcrypt rounds** are reduced to 4 in the test environment (`APP_ENV=test`) to keep the test suite fast.
 - **Database URL** accepts either a single `DATABASE_URL` or component variables (`DB_USER`, `DB_PASSWORD`, `DB_NAME`, etc.) for Docker-compose compatibility. `postgresql://` is automatically normalized to `postgresql+psycopg://` for the psycopg v3 driver.
