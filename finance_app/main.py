@@ -69,6 +69,32 @@ app.include_router(analytics_router)
 app.include_router(users_router)
 
 
+@app.get("/")
+def root() -> dict[str, object]:
+    """Return a small index of the most useful API routes."""
+    return {
+        "message": "API running",
+        "docs": "/docs",
+        "routes": {
+            "auth": {
+                "register": "/api/auth/register",
+                "login": "/api/auth/login",
+                "refresh": "/api/auth/refresh",
+            },
+            "health": {
+                "status": "/health",
+                "database": "/health/db",
+            },
+            "resources": {
+                "users": "/api/users",
+                "categories": "/api/categories",
+                "transactions": "/api/transactions",
+                "analytics": "/api/analytics/summary",
+            },
+        },
+    }
+
+
 @app.get("/health")
 def health_check() -> dict[str, str]:
     """Return process-level health status."""
