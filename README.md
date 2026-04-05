@@ -355,6 +355,6 @@ The test suite covers auth flows, full transaction CRUD, role enforcement (viewe
 - **Viewers** have read-only access to their own transactions but cannot apply any filters or access analytics.
 - **Analysts** can filter and access analytics (scoped to their own data) but cannot delete transactions.
 - **Admins** have full CRUD on all transactions across all users, can create transactions on behalf of any user via `target_user_id`, and see all data in analytics.
-- **Authentication** uses JWT Bearer tokens only — no session cookies.
+- **Authentication** uses JWT Bearer tokens only, no session cookies.
 - **bcrypt rounds** are reduced to 4 in the test environment (`APP_ENV=test`) to keep the test suite fast.
 - **Database URL** accepts either a single `DATABASE_URL` or component variables (`DB_USER`, `DB_PASSWORD`, `DB_NAME`, etc.) for Docker-compose compatibility. `postgresql://` is automatically normalized to `postgresql+psycopg://` for the psycopg v3 driver.
