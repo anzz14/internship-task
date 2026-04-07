@@ -28,35 +28,35 @@ finance_app/
 ├── .env.example
 ├── alembic/                   # Alembic migration scripts
 │   └── versions/
-└── app/
-    ├── database.py            # SQLAlchemy engine + session factory (lru_cache singletons)
-    ├── dependencies.py        # Shared FastAPI deps: get_db, get_current_user, require_role
-    ├── models/
-    │   ├── user.py            # User model + UserRole enum
-    │   ├── transaction.py     # Transaction model
-    │   └── category.py        # Category model
-    ├── schemas/
-    │   ├── user.py            # Register / login / response schemas
-    │   ├── transaction.py     # Create / update / list / response schemas
-    │   ├── analytics.py       # Summary / breakdown / monthly / recent schemas
-    │   └── category.py        # Category create / update / response schemas
-    ├── routers/
-    │   ├── auth.py
-    │   ├── transactions.py
-    │   ├── categories.py
-    │   ├── analytics.py
-    │   └── users.py
-    ├── services/
-    │   ├── auth_service.py
-    │   ├── transaction_service.py
-    │   ├── analytics_service.py
-    │   ├── category_service.py
-    │   └── user_service.py
-    └── utils/
-        ├── hashing.py         # bcrypt helpers (reduced rounds in test env)
-        ├── jwt.py             # Token creation and verification
-        ├── pagination.py      # Offset + total-pages helpers
-        └── sentinel.py        # UNSET sentinel for partial update fields
+├── app/
+│   ├── database.py            # SQLAlchemy engine + session factory (lru_cache singletons)
+│   ├── dependencies.py        # Shared FastAPI deps: get_db, get_current_user, require_role
+│   ├── models/
+│   │   ├── user.py            # User model + UserRole enum
+│   │   ├── transaction.py     # Transaction model
+│   │   └── category.py        # Category model
+│   ├── schemas/
+│   │   ├── user.py            # Register / login / response schemas
+│   │   ├── transaction.py     # Create / update / list / response schemas
+│   │   ├── analytics.py       # Summary / breakdown / monthly / recent schemas
+│   │   └── category.py        # Category create / update / response schemas
+│   ├── routers/
+│   │   ├── auth.py
+│   │   ├── transactions.py
+│   │   ├── categories.py
+│   │   ├── analytics.py
+│   │   └── users.py
+│   ├── services/
+│   │   ├── auth_service.py
+│   │   ├── transaction_service.py
+│   │   ├── analytics_service.py
+│   │   ├── category_service.py
+│   │   └── user_service.py
+│   └── utils/
+│       ├── hashing.py         # bcrypt helpers (reduced rounds in test env)
+│       ├── jwt.py             # Token creation and verification
+│       ├── pagination.py      # Offset + total-pages helpers
+│       └── sentinel.py        # UNSET sentinel for partial update fields
 └── tests/
     ├── conftest.py            # Fixtures: test DB session (rollback pattern), HTTP client, seed helpers
     ├── test_auth.py
